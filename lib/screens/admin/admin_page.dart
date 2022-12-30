@@ -35,19 +35,19 @@ class _AdminPageState extends State<AdminPage> {
                     onTap: () {
                       Navigator.pushNamed(context, RouteName.showCategory);
                     },
-                    buttonName: 'Categories'),
+                    buttonName: 'Kategoriyalar'),
                 SizedBox(height: 12.h),
                 buttonWidgetbyHomrOrAdmin(
                     onTap: () {
                       Navigator.pushNamed(context, RouteName.showProduct);
                     },
-                    buttonName: 'Products'),
+                    buttonName: 'Mahsulotlar'),
                 SizedBox(height: 12.h),
                 buttonWidgetbyHomrOrAdmin(
                     onTap: () {
                       Navigator.pushNamed(context, RouteName.allUsers);
                     },
-                    buttonName: 'Users'),
+                    buttonName: 'Foydalanuvchilar'),
               ],
             ),
           ),

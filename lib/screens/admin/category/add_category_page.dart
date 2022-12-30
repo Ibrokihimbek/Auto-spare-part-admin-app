@@ -6,6 +6,7 @@ import 'package:admin_aplication/view_model/category_view_model.dart';
 import 'package:admin_aplication/widgets/button_large.dart';
 import 'package:admin_aplication/widgets/font_style_widget.dart';
 import 'package:admin_aplication/widgets/input_decoration_widget.dart';
+import 'package:admin_aplication/widgets/toast_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -26,7 +27,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
       TextEditingController();
   final ImagePicker _picker = ImagePicker();
   XFile? _image;
-  String imageUrl = "";
+  String imageUrl = '';
   bool isLoading = false;
   @override
   void initState() {
@@ -70,10 +71,10 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                           controller: addCategoryCantroller,
                           textInputAction: TextInputAction.next,
                           autovalidateMode: AutovalidateMode.onUserInteraction,
-                          validator: (category) =>
-                              category != null && category.length < 6
-                                  ? "Mahsulot nomini 6 ta belgidan ko'p kiriting"
-                                  : null,
+                          validator: (category) => category != null &&
+                                  category.length < 6
+                              ? "Mahsulot nomini 6 ta belgidan ko'p kiriting"
+                              : null,
                           style: fontPoppinsW400(appcolor: AppColors.white),
                           decoration: getInputDecoration(
                               label: 'Mahsulot nomini kiriting'),
@@ -98,38 +99,52 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                           decoration: getInputDecoration(
                               label: "Mahsulot haqida ma'lumot kiriting"),
                         ),
+                        SizedBox(height: 8.h),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Rasm joylashtiring  ➣",
+                              style: fontPoppinsW400(appcolor: AppColors.white),
+                            ),
+                            imageUrl.isEmpty
+                                ? SizedBox(
+                                    width: 100.w,
+                                    height: 100.h,
+                                    child: Image.asset(AppImages.image_car),
+                                  )
+                                : SizedBox(
+                                    width: 100.w,
+                                    height: 100.h,
+                                    child: Image.network(imageUrl),
+                                  ),
+                          ],
+                        ),
                         SizedBox(height: 30.h),
                         buttonLargeWidget(
                             onTap: () {
                               _showPicker(context);
                             },
-                            buttonName: 'kategoryaga rasm tanlash'),
+                            buttonName: 'kategoriyaga rasm tanlash'),
                         SizedBox(height: 8.h),
                         buttonLargeWidget(
                             onTap: () {
-                              CategoryModel categoryModel = CategoryModel(
-                                categoryId: "",
-                                categoryName: addCategoryCantroller.text,
-                                description:
-                                    addCategoryDescriptionCantroller.text,
-                                imageUrl: imageUrl.isEmpty
-                                    ? AppImages.image_car
-                                    : imageUrl,
-                                createdAt: DateTime.now().toString(),
-                              );
-                              Provider.of<CategoryViewModel>(context,
-                                      listen: false)
-                                  .addCategory(categoryModel);
-                              Navigator.pop(context);
+                              if (imageUrl.isNotEmpty) {
+                                CategoryModel categoryModel = CategoryModel(
+                                  categoryId: "",
+                                  categoryName: addCategoryCantroller.text,
+                                  description:
+                                      addCategoryDescriptionCantroller.text,
+                                  imageUrl: imageUrl,
+                                  createdAt: DateTime.now().toString(),
+                                );
+                                Provider.of<CategoryViewModel>(context,
+                                        listen: false)
+                                    .addCategory(categoryModel);
+                                Navigator.pop(context);
+                              }
                             },
-                            buttonName: 'Add Category'),
-                        Container(
-                          width: 100,
-                          height: 100,
-                          child: imageUrl.isEmpty
-                              ? Image.asset(AppImages.image_car)
-                              : Image.network(imageUrl),
-                        )
+                            buttonName: "Kategoriya qo'shish"),
                       ],
                     ),
                   );
@@ -154,7 +169,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                       AppImages.icon_galery,
                       height: 40.h,
                     ),
-                    title: const Text("Gallery"),
+                    title: const Text("Galareya"),
                     onTap: () {
                       _getFromGallery();
                       Navigator.of(context).pop();
@@ -164,7 +179,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                     AppImages.icon_camera_upload_photo,
                     height: 40.h,
                   ),
-                  title: const Text('Camera'),
+                  title: const Text('Kamera'),
                   onTap: () {
                     _getFromCamera();
                     Navigator.of(context).pop();
@@ -186,6 +201,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
       if (!mounted) return;
       setState(() {
         isLoading = true;
+        getMyToast(message: 'Rasm yuklanmoqda');
       });
       imageUrl = await FileUploader.imageUploader(pickedFile, 'categoryImages');
       setState(() {
@@ -203,8 +219,13 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
     );
     if (pickedFile != null) {
       if (!mounted) return;
+      setState(() {
+        isLoading = true;
+        getMyToast(message: 'Rasm yuklanmoqda');
+      });
       imageUrl = await FileUploader.imageUploader(pickedFile, 'categoryImages');
       setState(() {
+        isLoading = false;
         _image = pickedFile;
       });
     }

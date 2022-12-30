@@ -54,7 +54,7 @@ class _ShowCategoryPageState extends State<ShowCategoryPage> {
                       onTap: () {
                         Navigator.pushNamed(context, RouteName.addCategory);
                       },
-                      buttonName: 'Add Catigory'),
+                      buttonName: "Kategoriya qo'shish"),
                 ),
               ],
             );

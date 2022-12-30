@@ -10,7 +10,6 @@ class FileUploader {
     var imageRef = storageRef.child("images/$fileName/${xFile.name}");
     await imageRef.putFile(File(xFile.path));
     downloadUrl = await imageRef.getDownloadURL();
-    print('IMAGE DOWNLOADER URL: $downloadUrl');
     return downloadUrl;
   }
 

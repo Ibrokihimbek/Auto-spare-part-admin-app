@@ -240,7 +240,6 @@ class _AddProductPageState extends State<AddProductPage> {
                         SizedBox(height: 8.h),
                         buttonLargeWidget(
                             onTap: () {
-                              print("PPRODUCT IMAGES LIST: $productImages");
                               if (productImages.isNotEmpty) {
                                 ProductModel productModel = ProductModel(
                                   count: int.parse(countController.text),

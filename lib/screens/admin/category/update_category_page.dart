@@ -150,7 +150,7 @@ class _UpdateCategoryPageState extends State<UpdateCategoryPage> {
                                   .updateCategory(categoryModel);
                               Navigator.pop(context);
                             },
-                            buttonName: 'Update Category'),
+                            buttonName: 'Kategoriyani yangilash'),
                       ],
                     ),
                   );

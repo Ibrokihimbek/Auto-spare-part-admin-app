@@ -1,13 +1,20 @@
+import 'dart:io';
+
 import 'package:admin_aplication/data/models/category_model.dart';
 import 'package:admin_aplication/data/models/product_model.dart';
+import 'package:admin_aplication/data/service/file_uploader.dart';
 import 'package:admin_aplication/utils/app_colors.dart';
+import 'package:admin_aplication/utils/app_images.dart';
 import 'package:admin_aplication/view_model/category_view_model.dart';
 import 'package:admin_aplication/view_model/product_view_model.dart';
 import 'package:admin_aplication/widgets/button_large.dart';
 import 'package:admin_aplication/widgets/font_style_widget.dart';
 import 'package:admin_aplication/widgets/input_decoration_widget.dart';
+import 'package:admin_aplication/widgets/toast_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class AddProductPage extends StatefulWidget {
@@ -23,17 +30,17 @@ class _AddProductPageState extends State<AddProductPage> {
   final TextEditingController priceController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
-  List<String> productImages = [
-    "https://www.pngitem.com/pimgs/m/183-1831803_laptop-collection-png-transparent-png.png",
-    "https://www.pngitem.com/pimgs/m/183-1831803_laptop-collection-png-transparent-png.png",
-  ];
+  List<String> productImages = [];
+  List<XFile> images = [];
   String categoryId = "";
   CategoryModel? categoryModel;
   String createdAt = DateTime.now().toString();
   List<String> currencies = ["USD", "SO'M", "RUBL", "TENGE"];
   String selectedCurrency = "USD";
-
-
+  final ImagePicker _picker = ImagePicker();
+  String imageUrl = '';
+  bool isLoading = false;
+  XFile? _image;
 
   @override
   Widget build(BuildContext context) {
@@ -71,6 +78,7 @@ class _AddProductPageState extends State<AddProductPage> {
                           controller: countController,
                           textInputAction: TextInputAction.next,
                           autovalidateMode: AutovalidateMode.onUserInteraction,
+                          keyboardType: TextInputType.number,
                           validator: (product) =>
                               product != null && product.length < 2
                                   ? "Mahsulot sonini 2 tadan ko'p kiriting"
@@ -90,6 +98,7 @@ class _AddProductPageState extends State<AddProductPage> {
                           controller: priceController,
                           textInputAction: TextInputAction.next,
                           autovalidateMode: AutovalidateMode.onUserInteraction,
+                          keyboardType: TextInputType.number,
                           validator: (product) =>
                               product != null && product.length < 2
                                   ? "Mahsulot narxini 2 dan ko'p kiriting"
@@ -109,6 +118,7 @@ class _AddProductPageState extends State<AddProductPage> {
                           controller: nameController,
                           textInputAction: TextInputAction.next,
                           autovalidateMode: AutovalidateMode.onUserInteraction,
+                          keyboardType: TextInputType.text,
                           validator: (product) => product != null &&
                                   product.length < 6
                               ? "Mahsulot nomini 6 ta belgidan ko'p kiriting"
@@ -125,10 +135,11 @@ class _AddProductPageState extends State<AddProductPage> {
                         ),
                         SizedBox(height: 8.h),
                         TextFormField(
-                          maxLines: 4,
+                          maxLines: 2,
                           controller: descriptionController,
                           textInputAction: TextInputAction.next,
                           autovalidateMode: AutovalidateMode.onUserInteraction,
+                          keyboardType: TextInputType.text,
                           validator: (product) =>
                               product != null && product.length < 6
                                   ? "Ma'lumotni 6 ta belgidan ko'p kiriting"
@@ -177,7 +188,43 @@ class _AddProductPageState extends State<AddProductPage> {
                             ],
                           ),
                         ),
+                        SizedBox(height: 12.h),
+                        Center(
+                          child: Text(
+                            "▼ Rasmlarni joylashtiring ▼",
+                            style: fontPoppinsW400(appcolor: AppColors.white),
+                          ),
+                        ),
+                        SizedBox(height: 12.h),
+                        SizedBox(
+                          width: double.infinity,
+                          height: 150.h,
+                          child: images.isEmpty
+                              ? Image.asset(AppImages.image_car)
+                              : PageView.builder(
+                                  physics: const BouncingScrollPhysics(),
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: productImages.length,
+                                  itemBuilder:
+                                      (BuildContext conext, int index) {
+                                    return SizedBox(
+                                      width: double.infinity,
+                                      height: 150.h,
+                                      child: Image.file(
+                                        File(images[index].path),
+                                        fit: BoxFit.contain,
+                                      ),
+                                    );
+                                  },
+                                ),
+                        ),
                         SizedBox(height: 30.h),
+                        buttonLargeWidget(
+                            onTap: () {
+                              _showPicker(context);
+                            },
+                            buttonName: 'Mahsulotga rasm tanlash'),
+                        SizedBox(height: 8.h),
                         buttonLargeWidget(
                           onTap: () {
                             selectCategory((selectedCategory) {
@@ -190,27 +237,31 @@ class _AddProductPageState extends State<AddProductPage> {
                               ? "Qaysi kategoryaga qo'shilsin"
                               : categoryModel!.categoryName,
                         ),
-                        SizedBox(height: 12.h),
+                        SizedBox(height: 8.h),
                         buttonLargeWidget(
                             onTap: () {
-                              ProductModel productModel = ProductModel(
-                                count: int.parse(countController.text),
-                                price: int.parse(priceController.text),
-                                productImages: productImages,
-                                categoryId: categoryId,
-                                productId: "",
-                                productName: nameController.text,
-                                description: descriptionController.text,
-                                createdAt: createdAt,
-                                currency: selectedCurrency,
-                              );
+                              print("PPRODUCT IMAGES LIST: $productImages");
+                              if (productImages.isNotEmpty) {
+                                ProductModel productModel = ProductModel(
+                                  count: int.parse(countController.text),
+                                  price: int.parse(priceController.text),
+                                  productImages: productImages,
+                                  categoryId: categoryId,
+                                  productId: "",
+                                  productName: nameController.text,
+                                  description: descriptionController.text,
+                                  createdAt: createdAt,
+                                  currency: selectedCurrency,
+                                );
 
-                              Provider.of<ProductViewModel>(context,
-                                      listen: false)
-                                  .addProduct(productModel);
-                              Navigator.pop(context);
+                                Provider.of<ProductViewModel>(context,
+                                        listen: false)
+                                    .addProduct(productModel);
+                                Navigator.pop(context);
+                              }
                             },
                             buttonName: "Mahsulotni qo'shish"),
+                        SizedBox(height: 20.h),
                       ],
                     ),
                   );
@@ -238,12 +289,11 @@ class _AddProductPageState extends State<AddProductPage> {
                     categoryViewModel.categories.length,
                     (index) => ListTile(
                       title: Text(
-                        categoryViewModel
-                            .categories[index].categoryName,
+                        categoryViewModel.categories[index].categoryName,
                       ),
                       onTap: () {
-                        onCategorySelect.call(
-                            categoryViewModel.categories[index]);
+                        onCategorySelect
+                            .call(categoryViewModel.categories[index]);
                         Navigator.pop(context);
                       },
                     ),
@@ -255,5 +305,56 @@ class _AddProductPageState extends State<AddProductPage> {
         );
       },
     );
+  }
+
+  void _showPicker(context) {
+    showModalBottomSheet(
+        backgroundColor: AppColors.C_363941,
+        context: context,
+        builder: (BuildContext bc) {
+          return SizedBox(
+            height: 80.h,
+            child: Wrap(
+              children: <Widget>[
+                ListTile(
+                    leading: SvgPicture.asset(
+                      AppImages.icon_galery,
+                      height: 40.h,
+                    ),
+                    title: Text(
+                      "Galareya",
+                      style: fontPoppinsW400(appcolor: AppColors.white),
+                    ),
+                    onTap: () {
+                      selectImages();
+                      Navigator.of(context).pop();
+                    }),
+              ],
+            ),
+          );
+        });
+  }
+
+  void selectImages() async {
+    final List<XFile> selectedImages = await _picker.pickMultiImage();
+    if (selectedImages.isNotEmpty) {
+      if (!mounted) return;
+      setState(() {
+        isLoading = true;
+        getMyToast(message: 'Rasmlar yuklanmoqda');
+      });
+      images.addAll(selectedImages);
+      productImages = await multiImageUploader(selectedImages);
+    }
+    setState(() {});
+  }
+
+  Future<List<String>> multiImageUploader(List<XFile> list) async {
+    List<String> path = [];
+
+    for (XFile pick in list) {
+      path.add(await FileUploader.imageUploader(pick, 'productImages'));
+    }
+    return path;
   }
 }

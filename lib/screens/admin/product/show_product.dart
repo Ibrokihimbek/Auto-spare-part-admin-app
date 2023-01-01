@@ -55,7 +55,7 @@ class _ShowProductPageState extends State<ShowProductPage> {
                       onTap: () {
                         Navigator.pushNamed(context, RouteName.addProduct);
                       },
-                      buttonName: 'Add Product'),
+                      buttonName: "Mahsulotni qo'shish"),
                 ),
               ],
             );

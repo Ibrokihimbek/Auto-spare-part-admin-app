@@ -1,6 +1,5 @@
 import 'package:admin_aplication/data/models/user_model.dart';
 import 'package:admin_aplication/data/service/notification_api_cervice.dart';
-import 'package:admin_aplication/screens/app_router.dart';
 import 'package:admin_aplication/utils/app_colors.dart';
 import 'package:admin_aplication/utils/app_images.dart';
 import 'package:admin_aplication/view_model/users_view_model.dart';
@@ -69,8 +68,14 @@ class _AllUsersPageState extends State<AllUsersPage> {
                           ),
                           IconButton(
                             onPressed: () async {
+                              String message = "";
+                              await _showDialog((value) {
+                                message = value;
+                              });
+
                               String messageId = await NotificationApiService
-                                  .sendNotificationToAll("users");
+                                  .sendNotificationToAll(
+                                      topicName: "users", message: message);
                             },
                             icon: const Icon(
                               Icons.notification_add,
@@ -113,39 +118,42 @@ class _AllUsersPageState extends State<AllUsersPage> {
       barrierDismissible: false,
       context: context,
       builder: (context) {
-        return Dialog(
-          backgroundColor: Colors.transparent,
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15.r),
-              border: Border.all(
-                color: AppColors.white,
-                width: 1,
+        return WillPopScope(
+          onWillPop: () async => false,
+          child: Dialog(
+            backgroundColor: AppColors.C_363941,
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15.r),
+                border: Border.all(
+                  color: AppColors.white,
+                  width: 1,
+                ),
               ),
-            ),
-            height: 200,
-            child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 12, vertical: 8).r,
-              child: Column(
-                children: [
-                  SizedBox(height: 12.h),
-                  TextFormField(
-                    controller: controller,
-                    textInputAction: TextInputAction.next,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    style: fontPoppinsW400(appcolor: AppColors.white)
-                        .copyWith(fontSize: 17.sp),
-                    decoration: getInputDecoration(label: "Habar"),
-                  ),
-                  SizedBox(height: 12.h),
-                  buttonLargeWidget(
-                      onTap: () {
-                        message.call(controller.text);
-                        Navigator.pop(context);
-                      },
-                      buttonName: "jo'natish"),
-                ],
+              height: 200,
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8).r,
+                child: Column(
+                  children: [
+                    SizedBox(height: 12.h),
+                    TextFormField(
+                      controller: controller,
+                      textInputAction: TextInputAction.next,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      style: fontPoppinsW400(appcolor: AppColors.white)
+                          .copyWith(fontSize: 17.sp),
+                      decoration: getInputDecoration(label: "Habar"),
+                    ),
+                    SizedBox(height: 12.h),
+                    buttonLargeWidget(
+                        onTap: () {
+                          message.call(controller.text);
+                          Navigator.pop(context);
+                        },
+                        buttonName: "jo'natish"),
+                  ],
+                ),
               ),
             ),
           ),

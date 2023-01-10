@@ -190,7 +190,6 @@ class _AllUsersPageState extends State<AllUsersPage> {
                   await _showDialog((value) {
                     message = value;
                   });
-
                   int sendSuccess =
                       await NotificationApiService.sendNotificationToUser(
                     fcmToken: model.fcmToken,

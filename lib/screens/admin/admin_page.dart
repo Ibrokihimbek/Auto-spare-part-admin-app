@@ -48,6 +48,12 @@ class _AdminPageState extends State<AdminPage> {
                       Navigator.pushNamed(context, RouteName.allUsers);
                     },
                     buttonName: 'Foydalanuvchilar'),
+                SizedBox(height: 12.h),
+                buttonWidgetbyHomrOrAdmin(
+                    onTap: () {
+                      Navigator.pushNamed(context, RouteName.infoStore);
+                    },
+                    buttonName: "Do'kon haqida ma'lumot"),
               ],
             ),
           ),

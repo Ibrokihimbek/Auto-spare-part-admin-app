@@ -1,5 +1,6 @@
 import 'package:admin_aplication/data/app_repositroy/auth_repository.dart';
 import 'package:admin_aplication/data/app_repositroy/categories_repository.dart';
+import 'package:admin_aplication/data/app_repositroy/info_repository.dart';
 import 'package:admin_aplication/data/app_repositroy/order_repository.dart';
 import 'package:admin_aplication/data/app_repositroy/products_repository.dart';
 import 'package:admin_aplication/screens/admin/admin_page.dart';
@@ -8,6 +9,7 @@ import 'package:admin_aplication/screens/auth/auth_page.dart';
 import 'package:admin_aplication/view_model/auth_view_model.dart';
 import 'package:admin_aplication/view_model/bottom_nav_view_model.dart';
 import 'package:admin_aplication/view_model/category_view_model.dart';
+import 'package:admin_aplication/view_model/info_view_model.dart';
 import 'package:admin_aplication/view_model/order_view_model.dart';
 import 'package:admin_aplication/view_model/product_view_model.dart';
 import 'package:admin_aplication/view_model/users_view_model.dart';
@@ -46,7 +48,7 @@ void main() async {
             ),
           ),
         ),
-         ChangeNotifierProvider(
+        ChangeNotifierProvider(
           create: (context) => UsersViewModel(
             usersRepository: UsersRepository(
               firebaseFirestore: fireStore,
@@ -58,11 +60,18 @@ void main() async {
             authRepository: AuthRepository(firebaseAuth: FirebaseAuth.instance),
           ),
         ),
+        ChangeNotifierProvider(
+          create: (context) => InfoViewModel(
+            infoStoreRepository:
+                InfoStoreRepository(firebaseFirestore: fireStore),
+          ),
+        ),
       ],
       child: const MyApp(),
     ),
   );
 }
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 

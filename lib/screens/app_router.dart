@@ -3,6 +3,8 @@ import 'package:admin_aplication/screens/admin/admin_page.dart';
 import 'package:admin_aplication/screens/admin/category/add_category_page.dart';
 import 'package:admin_aplication/screens/admin/category/show_category_page.dart';
 import 'package:admin_aplication/screens/admin/category/update_category_page.dart';
+import 'package:admin_aplication/screens/admin/info_store/add_info.dart';
+import 'package:admin_aplication/screens/admin/info_store/info_store.dart';
 import 'package:admin_aplication/screens/admin/product/add_product_page.dart';
 import 'package:admin_aplication/screens/admin/product/show_product.dart';
 import 'package:admin_aplication/screens/admin/product/update_product_page.dart';
@@ -12,19 +14,18 @@ import 'package:flutter/material.dart';
 
 abstract class RouteName {
   static const splash = 'splash';
-  static const bottomNav = 'bottomNav';
   static const main = 'main';
   static const addCategory = 'addCategory';
   static const admin = 'admin';
-  static const home = 'home';
   static const showCategory = 'showCategory';
   static const updateCategory = 'updateCategory';
-  static const product = 'product';
   static const showProduct = 'showProduct';
   static const addProduct = 'addProduct';
   static const updateProduct = 'updateProduct';
   static const productInfo = 'productInfo';
   static const allUsers = 'allUsers';
+  static const infoStore = 'infoStore';
+  static const addInfo = 'addInfo';
 }
 
 class AppRoutes {
@@ -46,6 +47,11 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => AddProductPage());
       case RouteName.allUsers:
         return MaterialPageRoute(builder: (_) => AllUsersPage());
+      case RouteName.infoStore:
+        return MaterialPageRoute(builder: (_) => InfoStorePage());
+
+      case RouteName.addInfo:
+        return MaterialPageRoute(builder: (_) => AddInfoPage());
       case RouteName.updateProduct:
         final args = settings.arguments as Map<String, dynamic>;
         return MaterialPageRoute(

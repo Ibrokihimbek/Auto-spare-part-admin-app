@@ -19,6 +19,7 @@ class _AddInfoPageState extends State<AddInfoPage> {
   final TextEditingController addInfoStore = TextEditingController();
   final TextEditingController addSellerName = TextEditingController();
   final TextEditingController addSellerPhone = TextEditingController();
+  final TextEditingController addAddressStore = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -81,6 +82,26 @@ class _AddInfoPageState extends State<AddInfoPage> {
                     ),
                     SizedBox(height: 24.h),
                     Text(
+                      "Do'kon manzili",
+                      style: fontPoppinsW400(appcolor: AppColors.white)
+                          .copyWith(fontSize: 14.sp),
+                    ),
+                    SizedBox(height: 8.h),
+                    TextFormField(
+                      maxLines: 2,
+                      controller: addAddressStore,
+                      textInputAction: TextInputAction.next,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      validator: (category) =>
+                          category != null && category.length < 6
+                              ? "6 ta belgidan ko'p kiriting"
+                              : null,
+                      style: fontPoppinsW400(appcolor: AppColors.white),
+                      decoration: getInputDecoration(
+                          label: "Do'kon manzilini kiriting"),
+                    ),
+                    SizedBox(height: 24.h),
+                    Text(
                       "Do'kon haqida ma'lumot",
                       style: fontPoppinsW400(appcolor: AppColors.white)
                           .copyWith(fontSize: 14.sp),
@@ -103,6 +124,7 @@ class _AddInfoPageState extends State<AddInfoPage> {
                     buttonLargeWidget(
                         onTap: () {
                           InfoModel infoModel = InfoModel(
+                            address: addAddressStore.text,
                             infoId: '',
                             infoStore: addInfoStore.text,
                             sellerName: addSellerName.text,

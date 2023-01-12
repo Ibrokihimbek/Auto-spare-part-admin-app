@@ -26,9 +26,13 @@ Widget buttonLargeWidget({required VoidCallback onTap, required String buttonNam
         borderRadius: BorderRadius.circular(15.r),
       ),
       child: Center(
-        child: Text(
-          buttonName,
-          style: fontPoppinsW500(appcolor: AppColors.white),
+        child: SizedBox(
+          width: 200.w,
+          child: Text(
+            buttonName,
+            textAlign: TextAlign.center,
+            style: fontPoppinsW500(appcolor: AppColors.white),
+          ),
         ),
       ),
     ),

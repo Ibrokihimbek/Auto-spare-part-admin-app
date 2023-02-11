@@ -47,6 +47,7 @@ class _SignInPageState extends State<SignInPage> {
                       title: 'Login', subTitle: 'Welcome to Car Spare Part'),
                   SizedBox(height: 44.h),
                   TextFormField(
+                    keyboardType: TextInputType.emailAddress,
                     controller: emailController,
                     textInputAction: TextInputAction.next,
                     autovalidateMode: AutovalidateMode.onUserInteraction,

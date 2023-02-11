@@ -34,4 +34,6 @@ class AppImages {
   static const icon_arrow_down = 'assets/icons/icon_arrow_down.svg';
   static const icon_arrpw_up = 'assets/icons/icon_arroe_up.svg';
   static const icon_location = 'assets/icons/icon_location.svg';
+  static const icon_call = 'assets/icons/icon_call.svg';
+  static const icon_description = 'assets/icons/icon_description.svg';
 }

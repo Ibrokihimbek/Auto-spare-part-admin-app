@@ -4,6 +4,8 @@ class InfoModel {
   String sellerName;
   String sellerPhoneNumber;
   String address;
+  String lat;
+  String long;
 
   InfoModel({
     required this.infoId,
@@ -11,6 +13,8 @@ class InfoModel {
     required this.sellerName,
     required this.sellerPhoneNumber,
     required this.address,
+    required this.lat,
+    required this.long,
   });
 
   factory InfoModel.formJson(Map<String, dynamic> jsonData) {
@@ -20,6 +24,8 @@ class InfoModel {
       infoStore: jsonData['infoStore'] as String? ?? '',
       sellerName: jsonData['sellerName'] as String? ?? '',
       sellerPhoneNumber: jsonData['sellerPhoneNumber'] as String? ?? '',
+      lat: jsonData['lat'] as String? ?? '',
+      long: jsonData['long'] as String? ?? '',
     );
   }
 
@@ -30,6 +36,8 @@ class InfoModel {
       'infoStore': infoStore,
       'sellerName': sellerName,
       'sellerPhoneNumber': sellerPhoneNumber,
+      'lat': lat,
+      'long': long,
     };
   }
 
@@ -41,7 +49,8 @@ class InfoModel {
       infoStore: $infoStore,
       sellerName: $sellerName,
       sellerPhoneNumber: $sellerPhoneNumber,
- 
+      lat: $lat
+      long: $long
       ''';
   }
 
@@ -51,8 +60,12 @@ class InfoModel {
     String? infoStore,
     String? sellerName,
     String? sellerPhoneNumber,
+    String? lat,
+    String? long,
   }) =>
       InfoModel(
+        lat: lat ?? this.lat,
+        long: long ?? this.long,
         address: address ?? this.address,
         infoId: infoId ?? this.infoId,
         infoStore: infoStore ?? this.infoStore,

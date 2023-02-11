@@ -1,3 +1,4 @@
+import 'package:admin_aplication/screens/admin/info_store/lat_long/lat_long.dart';
 import 'package:admin_aplication/screens/app_router.dart';
 import 'package:admin_aplication/utils/app_colors.dart';
 import 'package:admin_aplication/utils/app_images.dart';
@@ -10,6 +11,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'widgets/info_item.dart';
 
@@ -40,73 +42,61 @@ class InfoStorePage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(height: 20.h),
-                      infoStoreItem(
-                        title: 'Sotuvchining ismi:',
-                        subtitle: infoStore.sellerName,
-                      ),
-                      SizedBox(height: 24.h),
-                      infoStoreItem(
-                        title: 'telefon raqami:',
-                        subtitle: infoStore.sellerPhoneNumber,
-                      ),
-                      SizedBox(height: 24.h),
-                      Text(
-                        "Do'kon haqida ma'lumot:",
-                        style: fontPoppinsW400(
-                          appcolor: AppColors.C_FFC567,
-                        ),
-                      ),
-                      SizedBox(
-                        width: double.infinity,
-                        child: Text(
-                          infoStore.infoStore,
-                          style: fontPoppinsW400(
-                            appcolor: AppColors.white,
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 20.h),
-                      Text(
-                        "Do'kon manzili:",
-                        style: fontPoppinsW400(
-                          appcolor: AppColors.C_FFC567,
-                        ),
-                      ),
-                      SizedBox(
-                        width: double.infinity,
-                        child: Text(
-                          infoStore.address,
-                          style: fontPoppinsW400(
-                            appcolor: AppColors.white,
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 20.h),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Manzilni kartadan ko'rish:",
-                            style: fontPoppinsW400(
-                              appcolor: AppColors.C_FFC567,
-                            ),
-                          ),
-                          InkWell(
-                            onTap: () {},
-                            child: SizedBox(
-                              width: 30.w,
-                              height: 30.h,
-                              child: SvgPicture.asset(
-                                AppImages.icon_location,
-                                color: AppColors.white,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                  infoStoreItem(
+                      title: 'Sotuvchining ismi:',
+                      subtitle: infoStore.sellerName,
+                      icon: AppImages.icon_profile),
+                  SizedBox(height: 24.h),
+                  infoStoreItem(
+                    title: 'telefon raqami:',
+                    subtitle: infoStore.sellerPhoneNumber,
+                    icon: AppImages.icon_call,
+                    onTap: () async {
+                      final Uri phoneUri =
+                          Uri(scheme: "tel", path: infoStore.sellerPhoneNumber);
+                      try {
+                        if (await canLaunchUrl(phoneUri)) {
+                          await launchUrl(phoneUri);
+                        }
+                      } catch (error) {
+                        throw ("Cannot dial");
+                      }
+                    },
+                  ),
+                  SizedBox(height: 20.h),
+                  infoStoreItem(
+                    title: "Do'kon manzili:",
+                    subtitle: infoStore.address,
+                    icon: AppImages.icon_home,
+                  ),
+                  SizedBox(height: 20.h),
+                  infoStoreItem(
+                    title: "Manzilni xaritadan ko'rish:",
+                    subtitle: "Harita belgisiga bosing ➣",
+                    onTap: () {
+                      LatLong.openMap(
+                        double.parse(infoStore.lat),
+                        double.parse(infoStore.long),
+                      );
+                    },
+                    icon: AppImages.icon_location,
+                  ),
+                  SizedBox(height: 24.h),
+                  infoStoreItem(
+                      title: "Do'kon haqida ma'lumot:",
+                      subtitle: infoStore.infoStore,
+                      icon: AppImages.icon_description),
                       SizedBox(height: 30.h),
                       buttonLargeWidget(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.pushNamed(
+                            context,
+                            RouteName.updateInfo,
+                            arguments: {
+                              'infoModel': viewModel.information.first
+                            },
+                          );
+                        },
                         buttonName: "Do'kon haqida ma'lumotni yangilash",
                       ),
                     ],

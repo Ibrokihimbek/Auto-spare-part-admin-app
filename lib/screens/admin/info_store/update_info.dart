@@ -1,5 +1,6 @@
 import 'package:admin_aplication/data/models/info_model.dart';
 import 'package:admin_aplication/utils/app_colors.dart';
+import 'package:admin_aplication/view_model/category_view_model.dart';
 import 'package:admin_aplication/view_model/info_view_model.dart';
 import 'package:admin_aplication/widgets/button_large.dart';
 import 'package:admin_aplication/widgets/font_style_widget.dart';
@@ -8,18 +9,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
-class AddInfoPage extends StatefulWidget {
-  const AddInfoPage({super.key});
+class UpdateInfoStore extends StatefulWidget {
+  InfoModel infoModel;
+  UpdateInfoStore({super.key, required this.infoModel});
 
   @override
-  State<AddInfoPage> createState() => _AddInfoPageState();
+  State<UpdateInfoStore> createState() => _UpdateInfoStoreState();
 }
 
-class _AddInfoPageState extends State<AddInfoPage> {
-  final TextEditingController addInfoStore = TextEditingController();
-  final TextEditingController addSellerName = TextEditingController();
-  final TextEditingController addSellerPhone = TextEditingController();
-  final TextEditingController addAddressStore = TextEditingController();
+class _UpdateInfoStoreState extends State<UpdateInfoStore> {
+  final TextEditingController updateInfoStore = TextEditingController();
+  final TextEditingController updateSellerName = TextEditingController();
+  final TextEditingController updateSellerPhone = TextEditingController();
+  final TextEditingController updateAddressStore = TextEditingController();
+
+  @override
+  void initState() {
+    updateInfoStore.text = widget.infoModel.infoStore;
+    updateSellerName.text = widget.infoModel.sellerName;
+    updateSellerPhone.text = widget.infoModel.sellerPhoneNumber;
+    updateAddressStore.text = widget.infoModel.address;
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -53,7 +66,7 @@ class _AddInfoPageState extends State<AddInfoPage> {
                       ),
                       SizedBox(height: 8.h),
                       TextFormField(
-                        controller: addSellerName,
+                        controller: updateSellerName,
                         textInputAction: TextInputAction.next,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         validator: (category) =>
@@ -61,8 +74,8 @@ class _AddInfoPageState extends State<AddInfoPage> {
                                 ? "2 ta belgidan ko'p kiriting"
                                 : null,
                         style: fontPoppinsW400(appcolor: AppColors.white),
-                        decoration: getInputDecoration(
-                            label: "Sotuvchining ismini kiriting"),
+                        decoration:
+                            getInputDecoration(label: updateSellerName.text),
                       ),
                       SizedBox(height: 24.h),
                       Text(
@@ -72,7 +85,7 @@ class _AddInfoPageState extends State<AddInfoPage> {
                       ),
                       SizedBox(height: 8.h),
                       TextFormField(
-                        controller: addSellerPhone,
+                        controller: updateSellerPhone,
                         keyboardType: TextInputType.phone,
                         textInputAction: TextInputAction.next,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -81,7 +94,8 @@ class _AddInfoPageState extends State<AddInfoPage> {
                                 ? "9 ta belgidan ko'p kiriting"
                                 : null,
                         style: fontPoppinsW400(appcolor: AppColors.white),
-                        decoration: getInputDecoration(label: "+998991234567"),
+                        decoration:
+                            getInputDecoration(label: updateSellerPhone.text),
                       ),
                       SizedBox(height: 24.h),
                       Text(
@@ -92,7 +106,7 @@ class _AddInfoPageState extends State<AddInfoPage> {
                       SizedBox(height: 8.h),
                       TextFormField(
                         maxLines: 2,
-                        controller: addAddressStore,
+                        controller: updateAddressStore,
                         textInputAction: TextInputAction.next,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         validator: (category) =>
@@ -100,8 +114,8 @@ class _AddInfoPageState extends State<AddInfoPage> {
                                 ? "6 ta belgidan ko'p kiriting"
                                 : null,
                         style: fontPoppinsW400(appcolor: AppColors.white),
-                        decoration: getInputDecoration(
-                            label: "Do'kon manzilini kiriting"),
+                        decoration:
+                            getInputDecoration(label: updateAddressStore.text),
                       ),
                       SizedBox(height: 24.h),
                       Text(
@@ -112,7 +126,7 @@ class _AddInfoPageState extends State<AddInfoPage> {
                       SizedBox(height: 8.h),
                       TextFormField(
                         maxLines: 4,
-                        controller: addInfoStore,
+                        controller: updateInfoStore,
                         textInputAction: TextInputAction.next,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         validator: (category) =>
@@ -120,8 +134,8 @@ class _AddInfoPageState extends State<AddInfoPage> {
                                 ? "6 ta belgidan ko'p kiriting"
                                 : null,
                         style: fontPoppinsW400(appcolor: AppColors.white),
-                        decoration: getInputDecoration(
-                            label: "Do'kon haqida ma'lumot kiriting"),
+                        decoration:
+                            getInputDecoration(label: updateInfoStore.text),
                       ),
                       SizedBox(height: 20.h),
                       buttonLargeWidget(
@@ -129,17 +143,17 @@ class _AddInfoPageState extends State<AddInfoPage> {
                             InfoModel infoModel = InfoModel(
                               lat: '',
                               long: '',
-                              address: addAddressStore.text,
-                              infoId: '',
-                              infoStore: addInfoStore.text,
-                              sellerName: addSellerName.text,
-                              sellerPhoneNumber: addSellerPhone.text,
+                              address: updateAddressStore.text,
+                              infoId: widget.infoModel.infoId,
+                              infoStore: updateInfoStore.text,
+                              sellerName: updateSellerName.text,
+                              sellerPhoneNumber: updateSellerPhone.text,
                             );
                             Provider.of<InfoViewModel>(context, listen: false)
-                                .addInformation(infoModel);
+                                .updateInformation(infoModel);
                             Navigator.pop(context);
                           },
-                          buttonName: "Ma'lumotlarni qo'shish"),
+                          buttonName: "Ma'lumotlarni yangilash"),
                     ],
                   ),
                 ),

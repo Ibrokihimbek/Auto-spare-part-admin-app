@@ -5,6 +5,7 @@ import 'package:admin_aplication/screens/admin/category/show_category_page.dart'
 import 'package:admin_aplication/screens/admin/category/update_category_page.dart';
 import 'package:admin_aplication/screens/admin/info_store/add_info.dart';
 import 'package:admin_aplication/screens/admin/info_store/info_store.dart';
+import 'package:admin_aplication/screens/admin/info_store/update_info.dart';
 import 'package:admin_aplication/screens/admin/product/add_product_page.dart';
 import 'package:admin_aplication/screens/admin/product/show_product.dart';
 import 'package:admin_aplication/screens/admin/product/update_product_page.dart';
@@ -26,6 +27,7 @@ abstract class RouteName {
   static const allUsers = 'allUsers';
   static const infoStore = 'infoStore';
   static const addInfo = 'addInfo';
+  static const updateInfo = 'updateInfo';
 }
 
 class AppRoutes {
@@ -49,7 +51,13 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => AllUsersPage());
       case RouteName.infoStore:
         return MaterialPageRoute(builder: (_) => InfoStorePage());
-
+      case RouteName.updateInfo:
+        final args = settings.arguments as Map<String, dynamic>;
+        return MaterialPageRoute(
+          builder: (_) => UpdateInfoStore(
+            infoModel: args['infoModel'],
+          ),
+        );
       case RouteName.addInfo:
         return MaterialPageRoute(builder: (_) => AddInfoPage());
       case RouteName.updateProduct:

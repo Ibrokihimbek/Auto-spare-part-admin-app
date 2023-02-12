@@ -21,6 +21,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import 'data/app_repositroy/user_repository.dart';
+import 'data/models/latlong/lat_long.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -97,18 +98,20 @@ class MyApp extends StatelessWidget {
 }
 
 class MainPage extends StatelessWidget {
-  const MainPage({Key? key}) : super(key: key);
+  final LatLong latLong;
+  const MainPage({Key? key, required this.latLong}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<User?>(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, AsyncSnapshot<User?> snapshot) {
-          if (snapshot.hasData) {
-            return AdminPage();
-          } else {
-            return AuthPage();
-          }
-        });
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (context, AsyncSnapshot<User?> snapshot) {
+        if (snapshot.hasData) {
+          return AdminPage(latLong: latLong);
+        } else {
+          return AuthPage();
+        }
+      },
+    );
   }
 }

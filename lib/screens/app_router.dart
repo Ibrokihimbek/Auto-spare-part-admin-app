@@ -1,3 +1,4 @@
+import 'package:admin_aplication/data/models/latlong/lat_long.dart';
 import 'package:admin_aplication/main.dart';
 import 'package:admin_aplication/screens/admin/admin_page.dart';
 import 'package:admin_aplication/screens/admin/category/add_category_page.dart';
@@ -36,11 +37,20 @@ class AppRoutes {
       case RouteName.showCategory:
         return MaterialPageRoute(builder: (_) => ShowCategoryPage());
       case RouteName.main:
-        return MaterialPageRoute(builder: (_) => MainPage());
+        final args = settings.arguments as Map<String, dynamic>;
+        return MaterialPageRoute(
+          builder: (_) => MainPage(
+            latLong: args['latLong'],
+          ),
+        );
       case RouteName.splash:
         return MaterialPageRoute(builder: (_) => SplashPage());
       case RouteName.admin:
-        return MaterialPageRoute(builder: (_) => AdminPage());
+        return MaterialPageRoute(
+          builder: (_) => AdminPage(
+            latLong: settings.arguments as LatLong,
+          ),
+        );
       case RouteName.addCategory:
         return MaterialPageRoute(builder: (_) => AddCategoryPage());
       case RouteName.showProduct:
@@ -50,12 +60,17 @@ class AppRoutes {
       case RouteName.allUsers:
         return MaterialPageRoute(builder: (_) => AllUsersPage());
       case RouteName.infoStore:
-        return MaterialPageRoute(builder: (_) => InfoStorePage());
+        return MaterialPageRoute(
+          builder: (_) => InfoStorePage(
+            latLong: settings.arguments as LatLong,
+          ),
+        );
       case RouteName.updateInfo:
         final args = settings.arguments as Map<String, dynamic>;
         return MaterialPageRoute(
           builder: (_) => UpdateInfoStore(
             infoModel: args['infoModel'],
+            latLong: args['latLong']
           ),
         );
       case RouteName.addInfo:

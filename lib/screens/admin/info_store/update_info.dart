@@ -1,4 +1,5 @@
 import 'package:admin_aplication/data/models/info_model.dart';
+import 'package:admin_aplication/data/models/latlong/lat_long.dart';
 import 'package:admin_aplication/utils/app_colors.dart';
 import 'package:admin_aplication/view_model/category_view_model.dart';
 import 'package:admin_aplication/view_model/info_view_model.dart';
@@ -10,8 +11,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 class UpdateInfoStore extends StatefulWidget {
-  InfoModel infoModel;
-  UpdateInfoStore({super.key, required this.infoModel});
+  final LatLong latLong;
+  final InfoModel infoModel;
+  UpdateInfoStore({super.key, required this.infoModel, required this.latLong});
 
   @override
   State<UpdateInfoStore> createState() => _UpdateInfoStoreState();
@@ -141,8 +143,8 @@ class _UpdateInfoStoreState extends State<UpdateInfoStore> {
                       buttonLargeWidget(
                           onTap: () {
                             InfoModel infoModel = InfoModel(
-                              lat: '',
-                              long: '',
+                              lat: widget.latLong.lattitude.toString(),
+                              long: widget.latLong.longitude.toString(),
                               address: updateAddressStore.text,
                               infoId: widget.infoModel.infoId,
                               infoStore: updateInfoStore.text,

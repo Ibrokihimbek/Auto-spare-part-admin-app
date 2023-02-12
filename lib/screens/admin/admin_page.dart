@@ -1,17 +1,16 @@
+import 'package:admin_aplication/data/models/latlong/lat_long.dart';
 import 'package:admin_aplication/screens/admin/widgets/button_widget.dart';
 import 'package:admin_aplication/screens/app_router.dart';
 import 'package:admin_aplication/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class AdminPage extends StatefulWidget {
-  const AdminPage({super.key});
+import 'info_store/lat_long/lat_long.dart';
 
-  @override
-  State<AdminPage> createState() => _AdminPageState();
-}
+class AdminPage extends StatelessWidget {
+  LatLong latLong;
+  AdminPage({super.key, required this.latLong});
 
-class _AdminPageState extends State<AdminPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -51,7 +50,7 @@ class _AdminPageState extends State<AdminPage> {
                 SizedBox(height: 12.h),
                 buttonWidgetbyHomrOrAdmin(
                     onTap: () {
-                      Navigator.pushNamed(context, RouteName.infoStore);
+                      Navigator.pushNamed(context, RouteName.infoStore, arguments: latLong);
                     },
                     buttonName: "Do'kon haqida ma'lumot"),
               ],

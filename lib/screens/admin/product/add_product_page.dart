@@ -223,7 +223,7 @@ class _AddProductPageState extends State<AddProductPage> {
                             onTap: () {
                               _showPicker(context);
                             },
-                            buttonName: 'Mahsulotga rasm tanlash'),
+                            buttonName: 'Mahsulotga rasmlar tanlash'),
                         SizedBox(height: 8.h),
                         buttonLargeWidget(
                           onTap: () {

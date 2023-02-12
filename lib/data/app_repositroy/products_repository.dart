@@ -15,7 +15,7 @@ class ProductRepository {
           .collection("products")
           .doc(newProduct.id)
           .update({"productId": newProduct.id});
-      getMyToast(message: 'Product muvaffaqiyatli saqlandi');
+      getMyToast(message: 'Mahsulot muvaffaqiyatli saqlandi');
     } on FirebaseException catch (e) {
       getMyToast(message: e.message.toString());
     }
@@ -24,7 +24,7 @@ class ProductRepository {
   Future<void> deleteProduct({required String docId}) async {
     try {
       await _firestore.collection("products").doc(docId).delete();
-      getMyToast(message: 'Product muvaffaqiyatli saqlandi');
+      getMyToast(message: "Mahsulot muvaffaqiyatli o'chirildi");
     } on FirebaseException catch (e) {
       getMyToast(message: e.message.toString());
     }
@@ -36,7 +36,7 @@ class ProductRepository {
           .collection("products")
           .doc(productModel.productId)
           .update(productModel.toJson());
-      getMyToast(message: "Product muvaffaqiyatli yangilandi!");
+      getMyToast(message: "Mahsulot muvaffaqiyatli yangilandi!");
     } on FirebaseException catch (e) {
       getMyToast(message: e.message.toString());
     }

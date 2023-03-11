@@ -44,7 +44,9 @@ class AppRoutes {
           ),
         );
       case RouteName.splash:
-        return MaterialPageRoute(builder: (_) => SplashPage());
+        return MaterialPageRoute(
+          builder: (_) => SplashPage(),
+        );
       case RouteName.admin:
         return MaterialPageRoute(
           builder: (_) => AdminPage(
@@ -52,13 +54,21 @@ class AppRoutes {
           ),
         );
       case RouteName.addCategory:
-        return MaterialPageRoute(builder: (_) => AddCategoryPage());
+        return MaterialPageRoute(
+          builder: (_) => AddCategoryPage(),
+        );
       case RouteName.showProduct:
-        return MaterialPageRoute(builder: (_) => ShowProductPage());
+        return MaterialPageRoute(
+          builder: (_) => ShowProductPage(),
+        );
       case RouteName.addProduct:
-        return MaterialPageRoute(builder: (_) => AddProductPage());
+        return MaterialPageRoute(
+          builder: (_) => AddProductPage(),
+        );
       case RouteName.allUsers:
-        return MaterialPageRoute(builder: (_) => AllUsersPage());
+        return MaterialPageRoute(
+          builder: (_) => AllUsersPage(),
+        );
       case RouteName.infoStore:
         return MaterialPageRoute(
           builder: (_) => InfoStorePage(
@@ -69,9 +79,7 @@ class AppRoutes {
         final args = settings.arguments as Map<String, dynamic>;
         return MaterialPageRoute(
           builder: (_) => UpdateInfoStore(
-            infoModel: args['infoModel'],
-            latLong: args['latLong']
-          ),
+              infoModel: args['infoModel'], latLong: args['latLong']),
         );
       case RouteName.addInfo:
         return MaterialPageRoute(builder: (_) => AddInfoPage());
@@ -85,11 +93,14 @@ class AppRoutes {
       case RouteName.updateCategory:
         final args = settings.arguments as Map<String, dynamic>;
         return MaterialPageRoute(
-            builder: (_) => UpdateCategoryPage(
-                  categoryModel: args['categoryItem'],
-                ));
+          builder: (_) => UpdateCategoryPage(
+            categoryModel: args['categoryItem'],
+          ),
+        );
       default:
-        return MaterialPageRoute(builder: (_) => Scaffold());
+        return MaterialPageRoute(
+          builder: (_) => const Scaffold(),
+        );
     }
   }
 }

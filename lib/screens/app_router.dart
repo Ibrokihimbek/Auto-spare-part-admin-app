@@ -29,6 +29,7 @@ abstract class RouteName {
   static const infoStore = 'infoStore';
   static const addInfo = 'addInfo';
   static const updateInfo = 'updateInfo';
+  static const map = 'map';
 }
 
 class AppRoutes {

@@ -3,6 +3,7 @@ import 'package:admin_aplication/widgets/font_style_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+
 InputDecoration getInputDecoration({required String label}) {
   return InputDecoration(
     labelText: label,

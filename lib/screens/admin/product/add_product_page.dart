@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:admin_aplication/data/models/category_model.dart';
 import 'package:admin_aplication/data/models/product_model.dart';
 import 'package:admin_aplication/data/service/file_uploader.dart';
